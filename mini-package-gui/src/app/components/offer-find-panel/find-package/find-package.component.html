@@ -1,0 +1,31 @@
+<div class="container">
+    <article class="card">
+        <header class="card-header"> My Orders / Tracking </header>
+        <div class="card-body" *ngIf="!shouldShow">
+            <h2>Enter Order ID: </h2>
+            <input class="form-control info-input-fields" [(ngModel)]="guid" required />
+            <button class="button" (click)="getPackageInfo(guid)">Find my package</button>
+        </div>
+        <div class="card-body" *ngIf="shouldShow">
+            <label>Order Id: {{guid}}</label> 
+            <article class="card">
+                <div class="card-body row">
+                    <div class="col"> <strong>Estimated Delivery time:</strong> <br>{{deliveryDate}} </div>
+                    <div class="col"> <strong>Shipping BY:</strong> <br> {{courierName}}, | <i class="fa fa-phone"></i> {{courierMail}}</div>
+                    <div class="col"> <strong>Status:</strong> <br> {{otherstatus}} </div>
+                    <div class="col"> <strong>Tracking #:</strong> <br> {{guid}} </div>
+                </div>
+            </article>
+            <div class="track" *ngIf="isRightEnum">
+                <div [ngClass]="status != undefined && checkActive(statusType.AtWarehouse)  ? 'step active' : 'step' " > <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order confirmed</span> </div>
+                <div [ngClass]="status != undefined && checkActive(statusType.PickedByCourier) ? 'step active' : 'step' "> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Picked by courier</span> </div>
+                <div [ngClass]="status != undefined && checkActive(statusType.OnTheWay) ? 'step active' : 'step' "> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                <div [ngClass]="status != undefined && checkActive(statusType.Delievered) ? 'step active' : 'step' "> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Ready for pickup</span> </div>
+            </div>
+            <hr>
+                <button class="button" (click)="goBack()">Change order ID</button>
+            <hr>
+        </div>
+    </article>
+</div>
+

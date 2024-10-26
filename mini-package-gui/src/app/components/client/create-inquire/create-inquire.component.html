@@ -1,0 +1,74 @@
+<div class="container-sm">
+  <div class="row custom-border">
+    <div class="row border-title">
+      <span class="title">Package info</span>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <div class="hstack gap-3 package-info-column">
+          <label class="package-info-field-name">Width</label>
+          <input class="form-control info-input-fields" [(ngModel)]="width" required />
+        </div>
+        <div class="hstack gap-3 package-info-column">
+          <label class="package-info-field-name">Height</label>
+          <input class="form-control info-input-fields" [(ngModel)]="height" required />
+        </div>
+      </div>
+      <div class="col">
+        <div class="hstack gap-3 package-info-column">
+          <label class="package-info-field-name">Length</label>
+          <input class="form-control info-input-fields" [(ngModel)]="length" required />
+        </div>
+        <div class="hstack gap-3 package-info-column">
+          <label class="package-info-field-name">Weight</label>
+          <input class="form-control info-input-fields" [(ngModel)]="weight" required />
+        </div>
+      </div>
+      <div class="col">
+        <div class="hstack gap-3 package-info-column">
+          <label class="custom-label" for="flexCheckDefault">Delivery at weekend</label>
+          <input class="form-check-input" type="checkbox" id="flexCheckDefault" [(ngModel)]="inquire.deliveryAtWeekend">
+        </div>
+        <div class="hstack gap-3 package-info-column">
+          <label class="custom-label">Priority</label>
+          <input class="form-check-input" type="radio" name="flexRadioDefault" value="Low" id="flexRadioDefault1"
+            [(ngModel)]="inquire.priority">
+          <label class="form-check-label" for="flexRadioDefault1">Low</label>
+          <input class="form-check-input" type="radio" name="flexRadioDefault" value="High" id="flexRadioDefault1"
+            [(ngModel)]="inquire.priority">
+          <label class="form-check-label" for="flexRadioDefault1">High</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row custom-border">
+    <div class="col custom-border">
+      <app-address #sourceAddressComponent *ngIf="areAddressesAvailable" [countries]="countries" [addresses]="addresses" [title]="sourceAddress" [showDate]="true" [isClientLogged]="isClientLogged" [clientId]="clientId"></app-address>
+    </div>
+
+    <div class="col custom-border">
+      <app-address #destinationAddressComponent *ngIf="areAddressesAvailable" [countries]="countries" [addresses]="addresses" [title]="destinationAddress" [showDate]="true" [isClientLogged]="isClientLogged" [clientId]="clientId"></app-address>
+    </div>
+  </div>
+
+  <div class="row submit-div">
+    <button (click)="submit()" class="btn btn-secondary submit-button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Create inquire</button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" *ngIf="offersVisible">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel2">Offers</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body">
+          <app-offer-item [inquireId]="inquireId"></app-offer-item>
+        </div>
+    </div>
+  </div>
+</div>

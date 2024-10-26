@@ -1,0 +1,41 @@
+.custom-border {
+  border: 2px solid #808080;
+  border-radius: 15px;
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+  justify-content: center;
+}
+
+.title {
+  font-size: x-large;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.package-info-field-name {
+  font-size: large;
+  width: 15%;
+  margin: 10px;
+}
+
+.custom-label {
+  font-size: large;
+  margin: 10px;
+}
+
+.info-input-fields {
+  width: 25%;
+}
+
+.submit-div {
+  justify-content: center;
+}
+
+.submit-button {
+  width: auto;
+}
+
+.date-picker {
+  margin: 5px;
+}

@@ -1,0 +1,24 @@
+.offers-item-container {
+    border: 1px black solid;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.offers-item-container > div {
+    margin: 10px; /* Adjust the margin as needed */
+    padding: 8px;
+}
+
+.offers-item-content {
+    margin: 10px;
+    font-size: 1.2rem;
+}
+
+.offers-item-btn {
+    background-color: rgba(216, 216, 216, 0.15);
+    border-radius: 3px;
+}
+
+.offers-item-btn:hover {
+    background-color: rgb(44, 196, 120);
+}

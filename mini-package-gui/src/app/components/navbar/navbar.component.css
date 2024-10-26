@@ -1,0 +1,16 @@
+.navbar-left-module {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.navbar-center-module {
+    display: flex;
+    width: 80%;
+    justify-content: center;
+}
+
+.navbar-right-module {
+    display: flex;
+    justify-content: flex-end;
+}
+

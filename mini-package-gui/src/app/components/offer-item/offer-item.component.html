@@ -1,0 +1,6 @@
+<div *ngFor="let response of responses" class="offers-item-container">
+    <div class="offers-item-content">Inquire GUID: {{ response.inquireGuid }}</div>
+    <div class="offers-item-content">Team name: {{ response.teamName }}</div>
+    <div class="offers-item-content">Price: {{ response.price }}</div>
+    <button type="button" class="btn offers-item-btn offers-item-content" (click)="buyOffer(response)">Select this offer</button>
+</div>

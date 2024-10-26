@@ -1,0 +1,20 @@
+.login-container {
+    position: relative;
+    transform: translateY(50%);
+}
+
+a {
+    color: inherit;
+    float: right;
+}
+
+.login-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.google-login {
+  display: flex;
+  justify-content: center;
+}

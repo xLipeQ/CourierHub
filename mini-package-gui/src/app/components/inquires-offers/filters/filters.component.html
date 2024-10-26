@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="row">
+    <div class="col-3">
+      <label class="property-label">Sort</label>
+    </div>
+    <div class="col-9">
+      <div class="hstack gap-3">
+        <select class="form-select margin-input" [(ngModel)]="sortFilter.propertyName">
+          <option selected></option>
+          <option *ngFor="let filterArray of filters" [ngValue]="filterArray[0].filter.propertyName">{{ filterArray[0].displayName }}</option>
+        </select>
+        <select class="form-select margin-input" [(ngModel)]="sortFilter.sortOrder">
+          <option selected></option>
+          <option>Ascending</option>
+          <option>Descending</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngFor="let filterArray of filters">
+    <div class="col-3">
+      <label class="property-label">{{ filterArray[0].displayName }}</label>
+    </div>
+    <div class="col-9">
+      <div class="hstack gap-3" *ngIf="filterArray[0].filter.filterType == 'Minimum' && !filterArray[0].filter.propertyName.includes('Date')">
+        <input class="form-control margin-input" [(ngModel)]="filterArray[0].filter.value" placeholder="{{ filterArray[0].filter.filterType }}">
+        <input class="form-control margin-input" [(ngModel)]="filterArray[1].filter.value" placeholder="{{ filterArray[1].filter.filterType }}">
+      </div>
+      <div class="hstack gap-3" *ngIf="filterArray[0].filter.filterType == 'Minimum' && filterArray[0].filter.propertyName.includes('Date')">
+        <input type="date" class="form-control date-picker margin-input" [(ngModel)]="filterArray[0].filter.value">
+        <input type="date" class="form-control date-picker margin-input" [(ngModel)]="filterArray[1].filter.value">
+      </div>
+      <div class="hstack gap-3" *ngIf="filterArray[0].filter.propertyName == 'Priority'">
+        <select class="form-select margin-input" [(ngModel)]="filterArray[0].filter.value">
+          <option selected></option>
+          <option>Low</option>
+          <option>High</option>
+        </select>
+      </div>
+      <div class="hstack gap-3" *ngIf="filterArray[0].filter.propertyName == 'TeamName'">
+        <select class="form-select margin-input" [(ngModel)]="filterArray[0].filter.value">
+          <option selected></option>
+          <option>MiniPackage</option>
+        </select>
+      </div>
+      <div class="hstack gap-3" *ngIf="filterArray[0].filter.propertyName == 'OfferStatus'">
+        <input class="form-control margin-input" [(ngModel)]="filterArray[0].filter.value" placeholder="Equals">
+      </div>
+      <div class="hstack gap-3" *ngIf="filterArray[0].filter.propertyName == 'DeliveryAtWeekend'">
+        <select class="form-select margin-input" [(ngModel)]="filterArray[0].filter.value">
+          <option selected></option>
+          <option>True</option>
+          <option>False</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

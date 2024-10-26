@@ -1,0 +1,18 @@
+version: "3.9"  # optional since v1.27.0
+services:
+  sql:
+    image: "mcr.microsoft.com/mssql/server:2022-latest"
+    container_name: sql_server2022
+    ports: # not actually needed, because the two services are on the same network
+      - "1433:1433" 
+    environment:
+      - ACCEPT_EULA=y
+      - SA_PASSWORD=J@b2hvQncH3ArUaBK
+      - MiniPackageDbConnection=server=sql_server2022;database=MiniPackage;User=sa;Password=J@b2hvQncH3ArUaBK;MultipleActiveResultSets=True;TrustServerCertificate=True
+  web_api:
+    build: .
+    image: mini-package-api
+    container_name: mini-package-api_application
+    ports:
+      - "5000:80"
+    command: ["dotnet", "ef", "database update"]

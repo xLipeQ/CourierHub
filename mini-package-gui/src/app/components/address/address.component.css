@@ -1,0 +1,33 @@
+.title {
+    font-size: x-large;
+    justify-content: center;
+    margin-bottom: 5px;
+}
+
+.container {
+    text-align: center;
+    justify-content: center;
+}
+
+.address-field-name {
+    font-size: large;
+    width: 40%;
+    margin: 10px;
+}
+
+.country-select {
+  width: 98%;
+}
+
+.select-address {
+    margin-bottom: 5px;
+}
+
+.clear-button-div {
+    justify-content: center;
+}
+
+.clear-button {
+    margin-top: 5px;
+    width: auto;
+}

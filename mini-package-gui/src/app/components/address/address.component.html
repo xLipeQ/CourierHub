@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="row">
+        <span class="title">{{ title }}</span>
+        <div *ngIf="isClientLogged && addresses.length > 0" class="select-address">
+            <label class="address-field-name">Choose address to fill:</label>
+            <br>
+            <select class="form-select" [ngModel]="selectedAddress" (ngModelChange)="onChange($event)">
+                <option selected [ngValue]="defaultAddress">Select address</option>
+                <option *ngFor="let address of addresses" [ngValue]="address">
+                    {{address.stringAddress}}
+            </select>
+        </div>
+        <div class="hstack gap-3">
+            <label class="address-field-name">City</label>
+            <input class="form-control" [(ngModel)]="address.city" />
+        </div>
+        <div class="hstack gap-3">
+            <label class="address-field-name">Street</label>
+            <input class="form-control" [(ngModel)]="address.street" />
+        </div>
+        <div class="hstack gap-3">
+            <label class="address-field-name">House nr</label>
+            <input class="form-control" [(ngModel)]="address.streetNumber" />
+        </div>
+        <div class="hstack gap-3">
+            <label class="address-field-name">Flat nr</label>
+            <input class="form-control" [(ngModel)]="address.flatNumber" />
+        </div>
+        <div class="hstack gap-3">
+            <label class="address-field-name">Zip code</label>
+            <input class="form-control" [(ngModel)]="address.zipCode" />
+        </div>
+        <div class="hstack gap-3" *ngIf="showDate">
+            <label class="address-field-name">Date</label>
+            <input type="date" class="form-control date-picker" [(ngModel)]="date" />
+        </div>
+        <div class="hstack gap-3">
+            <label class="address-field-name">Country</label>
+            <select class="form-select country-select" [(ngModel)]="address.country" (ngModelChange)="onCountryChange($event)">
+                <option selected [ngValue]="null">Select country</option>
+                <option *ngFor="let country of countries" [ngValue]="country">{{country.countryName}}</option>
+            </select>
+        </div>
+        <div class="clear-button-div">
+            <button type="button" (click)="clearAddress()" class="btn btn-secondary clear-button">Clear</button>
+        </div>
+    </div>
+</div>

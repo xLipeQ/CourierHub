@@ -1,0 +1,52 @@
+steps:
+- checkout: self
+  clean: true
+
+# Install anc cache .NET SDK
+- task: UseDotNet@2
+  displayName: 'Install Dotnet Core cli'
+  inputs:
+    version: ${{ parameters.DotnetVersion }}
+
+# Restore NuGet packages
+- task: DotNetCoreCLI@2
+  displayName: 'Dotnet restore'
+  inputs:
+    command: restore
+    projects: |
+      ${{ parameters.RestoreBuildProjects }}
+      ${{ parameters.TestProjects }}
+
+# Build the project
+- task: DotNetCoreCLI@2
+  displayName: 'Dotnet build'
+  inputs:
+    projects: ${{ parameters.ServicePublishProjects }}
+    arguments: --configuration $(BuildConfiguration) --no-restore
+
+# Run the tests
+- task: DotNetCoreCLI@2
+  condition: ne('${{ parameters.TestProjects }}', '')
+  displayName: 'Dotnet Test'
+  inputs:
+    command: test
+    projects: ${{ parameters.TestProjects }}
+    arguments: '--configuration $(BuildConfiguration) --no-restore --collect "Code coverage"'
+
+# Publish web application
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: false
+    zipAfterPublish: true
+    projects: ${{ parameters.ServicePublishProjects }}
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-restore'
+
+# Publish artifacts after job finished within pipeline
+- task: PublishPipelineArtifact@1
+  displayName: Publish pipeline artifacts
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifactName: '${{ parameters.ProjectServiceName }}'
+    publishLocation: 'pipeline'

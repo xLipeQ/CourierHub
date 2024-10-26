@@ -1,0 +1,42 @@
+# Parameters for pipeline
+parameters:
+  - name: environment
+    displayName: Environment
+    type: string
+    default: BuildOnly
+    values:
+    - BuildOnly
+    - Development
+  - name: projectName
+    displayName: ProjectName
+    type: string
+    default: mini-package-api
+  - name: skipLint
+    displayName: SkipLint
+    type: boolean
+    default: false
+
+# no automatically triggers
+trigger:
+  - none
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  - group: Deploy-Environment-Shared
+
+# stages - list of the jobs to do step by step
+stages:
+  # Build and Lint (and other stuff) stage
+  - template: pipelines/build.yml
+    parameters:
+      Environment: ${{ parameters.Environment }}
+      ProjectName: ${{ parameters.ProjectName }}
+      SkipLint: ${{ parameters.SkipLint }}
+
+  - ${{ if not(eq(parameters.Environment,'BuildOnly')) }}:
+    - template: pipelines/release.yml
+      parameters:
+        Environment: ${{ parameters.Environment }}
+        ProjectName: ${{ parameters.ProjectName }}

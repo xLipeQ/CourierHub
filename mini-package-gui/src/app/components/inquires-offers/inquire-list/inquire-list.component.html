@@ -1,0 +1,127 @@
+<div class="container my-5">
+  <ul class="pagination">
+    <li *ngIf="inquires.length != 0 || pagingRequest.filters.length != 0" class="page-item"><a class="page-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="openFiltersModal()">Filters</a></li>
+  </ul>
+  <div *ngIf="inquires.length > 0">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Index</th>
+          <th>Width [cm]</th>
+          <th>Height [cm]</th>
+          <th>Length [cm]</th>
+          <th>Weight [g]</th>
+          <th>Created date</th>
+          <th>Source address</th>
+          <th>Pickup date</th>
+          <th>Destination address</th>
+          <th>Delivery date</th>
+          <th *ngIf="pagingRequest.onlyOffers">Price</th>
+          <th *ngIf="pagingRequest.onlyOffers">Team</th>
+          <th>Priority</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let inquire of inquires; let i = index">
+          <td>{{ 1 + i + (pagingRequest.pageNumber - 1) * pagingRequest.numberOfRows }}</td>
+          <td>{{ inquire.packageSizeWidth }}</td>
+          <td>{{ inquire.packageSizeHeight }}</td>
+          <td>{{ inquire.packageSizeLength }}</td>
+          <td>{{ inquire.weight }}</td>
+          <td>{{ inquire.createdDate | date:'HH:mm:ss dd-MM-yyyy' }}</td>
+          <td>{{ inquire.sourceAddress?.stringAddress }}</td>
+          <td>{{ inquire.pickupDate | date:'HH:mm:ss dd-MM-yyyy' }}</td>
+          <td>{{ inquire.destinationAddress?.stringAddress }}</td>
+          <td>{{ inquire.deliveryDate | date:'HH:mm:ss dd-MM-yyyy' }}</td>
+          <td *ngIf="pagingRequest.onlyOffers">{{ inquire.offer.price }}</td>
+          <td *ngIf="pagingRequest.onlyOffers">{{ inquire.offer.teamName }}</td>
+          <td>{{ inquire.priority }}</td>
+          <td *ngIf="inquire?.offer?.offerStatus && role == 'Client'">{{inquire?.offer?.offerStatus}}</td>
+          <td *ngIf="!inquire?.offer?.offerStatus && role == 'Client'">
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop2" (click)="setInquireId(inquire.inquireId)">Get Offers</button>
+          </td>
+          <td *ngIf="role != 'Client'">
+            {{inquire?.offer?.offerStatus || 'Registered'}}
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop3" (click)="openStatusModal(inquire)">Change status</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" (click)="onPageChange($event)">First</a></li>
+        <li *ngFor="let pageNumber of pageNumbers">
+          <a class="page-link" (click)="onPageChange($event)">
+            {{ pageNumber }}
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" (click)="onPageChange($event)">Last</a></li>
+      </ul>
+    </nav>
+  </div>
+  <p *ngIf="!inquires || inquires.length == 0">No Inquires found</p>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" *ngIf="showFiltersModal">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Filters</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <app-filters #filterComponent [onlyOffers]="onlyOffers"></app-filters>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="resetFilters()">Reset</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onSearch()">Search</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" *ngIf="showOffersModal">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel2">Offers</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <app-offer-item [inquireId]="currentInquireId"></app-offer-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" *ngIf="showStatusModal">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <div class="hstack gap-3">
+          <label class="address-field-name">Status</label>
+          <select class="form-select margin-input" [(ngModel)]="offerStatusChangeRequest.offerStatus" 
+          *ngIf="isInEnum(offerStatusChangeRequest.offerStatus)">
+            <ng-container *ngFor="let c of statuses">
+              <option [ngValue]="c">{{c}}</option>
+            </ng-container>
+          </select>
+          <select class="form-select margin-input" [(ngModel)]="offerStatusChangeRequest.offerStatus" 
+          *ngIf="!isInEnum(offerStatusChangeRequest.offerStatus)">
+              <option >Accepted</option>
+              <option >Registered</option>
+              <option >Declined</option>
+            </select>
+        </div>
+        <button type="button" class="btn btn-secondary" (click)="updateStatus()">Update</button>
+      </div>
+    </div>
+  </div>
+</div>

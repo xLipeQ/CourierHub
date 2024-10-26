@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Run docker-compose up with --build option
+docker-compose up --build
+
+# Tag the Docker image
+docker tag mini-package-api minipackageapi.azurecr.io/mini-package-api:latest
+
+# Push the Docker image to Azure Container Registry
+docker push minipackageapi.azurecr.io/mini-package-api:latest
